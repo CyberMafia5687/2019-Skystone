@@ -14,12 +14,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
+import static java.lang.Double.isNaN;
+
+
 // Check this website for color value help: http://colorizer.org/
 
-// LAST UPDATED: 12/27/19 \\
-// CONCEPTUAL; PLEASE ADJUST VALUES BEFORE MAKING IT OFFICIAL \\
+// LAST UPDATED: 1/19/20 \\
+// PRELIMINARY PROGRAM; ADDITIONAL MATERIAL NEEDED \\
 @Autonomous
-@Disabled
+//@Disabled
 public class Auto19_SS_B extends LinearOpMode {
 
     // Motors
@@ -31,10 +34,10 @@ public class Auto19_SS_B extends LinearOpMode {
     // Servos
     Servo servo1;
     Servo servo2;
-    Servo arm;
-    double servo_pos1 = 1.0;
-    double servo_pos2 = 0.0;
-    double arm_pos = 0.0;
+    Servo armServo;
+    double servo_pos1 = 0.0;
+    double servo_pos2 = 1.0;
+    double arm_pos = 1.0;
 
     // Sensors
     ColorSensor sensorColor;
@@ -52,175 +55,134 @@ public class Auto19_SS_B extends LinearOpMode {
 
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotor.Direction.FORWARD);
+        backRightMotor.setDirection(DcMotor.Direction.FORWARD);
 
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo2 = hardwareMap.get(Servo.class, "servo2");
-        arm = hardwareMap.get(Servo.class, "arm");
+        armServo = hardwareMap.get(Servo.class, "armServo");
         servo1.setPosition(servo_pos1);
         servo2.setPosition(servo_pos2);
-        arm.setPosition(arm_pos);
+        armServo.setPosition(arm_pos);
 
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_range");
+
         float hsvValues[] = {0F, 0F, 0F};
-        final float values[] = hsvValues;
         final double SCALE_FACTOR = 255;
 
         waitForStart();
 
-        while (opModeIsActive()){
+        if (opModeIsActive()){
 
             Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                     (int) (sensorColor.green() * SCALE_FACTOR),
                     (int) (sensorColor.blue() * SCALE_FACTOR),
                     hsvValues);
 
-            // Telemetry
-            telemetry.addData("Distance (cm)",
-                    String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
-            telemetry.addData("Alpha", sensorColor.alpha());
-            telemetry.addData("Red  ", sensorColor.red());
-            telemetry.addData("Green", sensorColor.green());
-            telemetry.addData("Blue ", sensorColor.blue());
-            telemetry.addData("Hue", hsvValues[0]);
-            telemetry.update();
-
-
             /*
             Robot should strafe to the Stone Line, detect the Skystone, retrieve & deliver the Skystone to the Build Side, grab Foundation,
-            turn into the Build Site, release the Foundation, return to Midfield Tape
+            turn into the Build Site, release the Foundation, return to Midfield Tape, and stop
 
             BLUE SIDE
             */
 
 
-            // Strafe to the blocks
-            frontLeftMotor.setPower(0.5);
-            backLeftMotor.setPower(-0.5);
-            frontRightMotor.setPower(-0.5);
-            backRightMotor.setPower(0.5);
-            sleep(2000);
+            // Initial Strafe
+            frontLeftMotor.setPower(-0.55);
+            backLeftMotor.setPower(0.55);
+            frontRightMotor.setPower(0.55);
+            backRightMotor.setPower(-0.55);
+            sleep(2850);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
             backRightMotor.setPower(0.0);
 
-            // Adjust distance, using Distance Sensor
-            if(sensorDistance.getDistance(DistanceUnit.CM) > 5.45){
-                frontLeftMotor.setPower(0.3);
-                backLeftMotor.setPower(-0.3);
-                frontRightMotor.setPower(-0.3);
-                backRightMotor.setPower(0.3);
+            sleep(700);
+
+            // Adjust distance
+            while(sensorDistance.getDistance(DistanceUnit.CM) > 12.8){
+                frontLeftMotor.setPower(-0.3);
+                backLeftMotor.setPower(0.3);
+                frontRightMotor.setPower(0.3);
+                backRightMotor.setPower(-0.3);
+
+                telemetry.addData("Distance (cm)",
+                        String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
+                telemetry.update();
             }
-            else if(sensorDistance.getDistance(DistanceUnit.CM) <= 5.45){
-                frontLeftMotor.setPower(0.0);
-                backLeftMotor.setPower(0.0);
-                frontRightMotor.setPower(0.0);
-                backRightMotor.setPower(0.0);
-            }
-            sleep(300);
+
+            sleep(500);
 
             // Skystone Detection
-            if(sensorColor.red() > 86) {
-                // If Yellow Detected, move
-                frontLeftMotor.setPower(-0.3);
-                backLeftMotor.setPower(-0.3);
-                frontRightMotor.setPower(-0.3);
-                backRightMotor.setPower(-0.3);
-                //
+            while(sensorColor.red() > 50){
+                frontLeftMotor.setPower(0.3);
+                backLeftMotor.setPower(0.3);
+                frontRightMotor.setPower(0.3);
+                backRightMotor.setPower(0.3);
+
+                // Telemetry
+                telemetry.addData("Red  ", sensorColor.red());
+                telemetry.addData("Green", sensorColor.green());
+                telemetry.addData("Blue ", sensorColor.blue());
+                telemetry.addData("Hue", hsvValues[0]);
+                telemetry.update();
             }
-            else if(sensorColor.red() <= 86){
-                // If Not Yellow Detected, STOP
-                frontLeftMotor.setPower(0.0);
-                backLeftMotor.setPower(0.0);
-                frontRightMotor.setPower(0.0);
-                backRightMotor.setPower(0.0);
-                sleep(300);
 
-                // Grab Skystone
-                arm_pos = 1.0;
-                arm.setPosition(arm_pos);
+            // If Not Yellow Detected, STOP
+            frontLeftMotor.setPower(0.0);
+            backLeftMotor.setPower(0.0);
+            frontRightMotor.setPower(0.0);
+            backRightMotor.setPower(0.0);
 
-                // Strafe away from Stone Line
-                frontLeftMotor.setPower(-0.4);
-                backLeftMotor.setPower(0.4);
-                frontRightMotor.setPower(0.4);
-                backRightMotor.setPower(-0.4);
-                sleep(300);
-                frontLeftMotor.setPower(0.0);
-                backLeftMotor.setPower(0.0);
-                frontRightMotor.setPower(0.0);
-                backRightMotor.setPower(0.0);
+            sleep(1000);
 
-                // Move across the Midfield Tape to Building Side
-                frontLeftMotor.setPower(0.5);
-                backLeftMotor.setPower(0.5);
-                frontRightMotor.setPower(0.5);
-                backRightMotor.setPower(0.5);
-                sleep(5000);
-                frontLeftMotor.setPower(0.0);
-                backLeftMotor.setPower(0.0);
-                frontRightMotor.setPower(0.0);
-                backRightMotor.setPower(0.0);
+            // Grab Skystone
+            arm_pos = 0.0;
+            armServo.setPosition(arm_pos);
+            sleep(800);
 
-                // Release Skystone
-                arm_pos = 0.0;
-                arm.setPosition(arm_pos);
+            // Strafe away from Stone Line
+            frontLeftMotor.setPower(0.40);
+            backLeftMotor.setPower(-0.45);
+            frontRightMotor.setPower(-0.45);
+            backRightMotor.setPower(0.45);
+            sleep(1450);
+            frontLeftMotor.setPower(0.0);
+            backLeftMotor.setPower(0.0);
+            frontRightMotor.setPower(0.0);
+            backRightMotor.setPower(0.0);
 
-                // Approach Foundation
-                frontLeftMotor.setPower(-0.4);
-                backLeftMotor.setPower(0.4);
-                frontRightMotor.setPower(0.4);
-                backRightMotor.setPower(-0.4);
-                sleep(300);
-                frontLeftMotor.setPower(0.0);
-                backLeftMotor.setPower(0.0);
-                frontRightMotor.setPower(0.0);
-                backRightMotor.setPower(0.0);
+            // Move across the Midfield Tape to Building Side
+            frontLeftMotor.setPower(-0.6);
+            backLeftMotor.setPower(-0.6);
+            frontRightMotor.setPower(-0.6);
+            backRightMotor.setPower(-0.6);
+            sleep(3350);
+            frontLeftMotor.setPower(0.0);
+            backLeftMotor.setPower(0.0);
+            frontRightMotor.setPower(0.0);
+            backRightMotor.setPower(0.0);
 
-                // Grab Foundation
-                servo1.setPosition(0.0);
-                servo2.setPosition(1.0);
-                sleep(300);
+            // Release Skystone
+            arm_pos = 1.0;
+            armServo.setPosition(arm_pos);
+            sleep(300);
 
-                // Spin into Build Site
-                frontLeftMotor.setPower(0.5);
-                backLeftMotor.setPower(0.5);
-                frontRightMotor.setPower(-0.5);
-                backRightMotor.setPower(-0.5);
-                sleep(1000);
-                frontLeftMotor.setPower(0.0);
-                backLeftMotor.setPower(0.0);
-                frontRightMotor.setPower(0.0);
-                backRightMotor.setPower(0.0);
+            // The foundation-grabbing maneuver has been removed for 1/11/20 competition
+            // The missing code can be found in Auto19_SS_E
 
-                // Release Foundation
-                servo1.setPosition(1.0);
-                servo2.setPosition(0.0);
-                sleep(300);
-
-                // Undo Spin
-                frontLeftMotor.setPower(-0.5);
-                backLeftMotor.setPower(-0.5);
-                frontRightMotor.setPower(0.5);
-                backRightMotor.setPower(0.5);
-                sleep(500);
-                frontLeftMotor.setPower(0.0);
-                backLeftMotor.setPower(0.0);
-                frontRightMotor.setPower(0.0);
-                backRightMotor.setPower(0.0);
-
-                // Back to Midfield Tape
-                frontLeftMotor.setPower(-0.5);
-                backLeftMotor.setPower(-0.5);
-                frontRightMotor.setPower(-0.5);
-                backRightMotor.setPower(-0.5);
-                sleep(3500);
-                frontLeftMotor.setPower(0.0);
-                backLeftMotor.setPower(0.0);
-                frontRightMotor.setPower(0.0);
-                backRightMotor.setPower(0.0);
-            }
+            // Back to Midfield Tape
+            frontLeftMotor.setPower(0.5);
+            backLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            backRightMotor.setPower(0.5);
+            sleep(1280);
+            frontLeftMotor.setPower(0.0);
+            backLeftMotor.setPower(0.0);
+            frontRightMotor.setPower(0.0);
+            backRightMotor.setPower(0.0);
         }
     }
 }

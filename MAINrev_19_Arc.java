@@ -9,13 +9,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-// Extra Imports
-//
-
-// All code is from here: https://seamonsters-2605.github.io/archive/mecanum/
+// All driving code is from here: https://seamonsters-2605.github.io/archive/mecanum/, go check it out!
 
 
-// LAST UPDATED: 12/28/19 \\
+// LAST UPDATED: 1/19/20 \\
 @TeleOp
 //@Disabled
 public class MAINrev_19_Arc extends LinearOpMode {
@@ -25,6 +22,7 @@ public class MAINrev_19_Arc extends LinearOpMode {
     private DcMotor backLeftMotor;
     private DcMotor frontRightMotor;
     private DcMotor backRightMotor;
+    private DcMotor armMotor;
 
     // Servos
     Servo servo1;
@@ -32,7 +30,9 @@ public class MAINrev_19_Arc extends LinearOpMode {
     Servo armServo;
     double servo_pos1 = 0.0;
     double servo_pos2 = 1.0;
-    double arm_pos = 0.0;
+    double arm_pos = 1.0;
+    CRServo wheel1;
+    CRServo wheel2;
 
     // Other Stuff
     //
@@ -46,12 +46,17 @@ public class MAINrev_19_Arc extends LinearOpMode {
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
 
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
+
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo2 = hardwareMap.get(Servo.class, "servo2");
         armServo = hardwareMap.get(Servo.class, "armServo");
         servo1.setPosition(servo_pos1);
         servo2.setPosition(servo_pos2);
         armServo.setPosition(arm_pos);
+
+        wheel1 = hardwareMap.get(CRServo.class, "wheel1");
+        wheel2 = hardwareMap.get(CRServo.class, "wheel2");
 
 
 
@@ -65,13 +70,16 @@ public class MAINrev_19_Arc extends LinearOpMode {
 
         while (opModeIsActive()){
 
-           // v1 Drive data
+           double tgtPower1;
+           double tgtPower2;
+
+           // Calculations
            float y1 = this.gamepad1.left_stick_y;
            float x1 = this.gamepad1.left_stick_x;
            float x2 = this.gamepad1.right_stick_x;
 
            double direction = Math.atan2(y1, x1);
-           double magnitude = 2 * (Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2))); // Makes the amplitude of the graph formed 2 instead of 1, giving full power
+           double magnitude = 2 * (Math.sqrt(Math.pow(x1, 2) + Math.pow(y1, 2))); // Makes the amplitude of the graphs formed 2 instead of 1, giving full power
            double turn = x2;
            double π = Math.PI;
 
@@ -85,7 +93,7 @@ public class MAINrev_19_Arc extends LinearOpMode {
            telemetry.addData("Back Right Power", backRightMotor.getPower());
            telemetry.update();
 
-           // Strafe + Turn
+           // Mecanum Drive v3.0 - Trigonometry (Strafe + Turn)
            // DO NOT CHANGE UNLESS DRIVE TRAIN CHANGES
            frontLeftMotor.setPower(-(Math.sin(direction - (π / 4)) * magnitude - turn));
            backLeftMotor.setPower(Math.sin(direction + (π / 4)) * magnitude - turn);
@@ -95,17 +103,36 @@ public class MAINrev_19_Arc extends LinearOpMode {
            ////////////////////////////////////////
 
            // Foundation-Grabbing Servos
-           if(this.gamepad1.b){
+           if(this.gamepad2.right_bumper){
                servo_pos1 = 1.0;
                servo_pos2 = 0.0;
            }
-           else if(this.gamepad1.a){
+           else if(this.gamepad2.left_bumper){
                servo_pos1 = 0.0;
                servo_pos2 = 1.0;
            }
            servo1.setPosition(servo_pos1);
            servo2.setPosition(servo_pos2);
 
+
+           // Side Arm Servo
+           if(this.gamepad2.x){
+               arm_pos = 1.0;
+           }
+           else if(this.gamepad2.y){
+               arm_pos = 0.0;
+           }
+           armServo.setPosition(arm_pos);
+
+
+           // Lift/Arm Control
+           tgtPower1 = this.gamepad2.left_stick_y;
+           armMotor.setPower(tgtPower1);
+
+           // Intake Controls
+           tgtPower2 = this.gamepad2.right_stick_y;
+           wheel1.setPower(tgtPower2);
+           wheel2.setPower(-tgtPower2);
 
           }
        }
