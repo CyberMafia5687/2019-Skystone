@@ -15,6 +15,5 @@ In this repository, you'll find the following programs:
 8. REV_Blinkin, REV_Blinkin_EX (Tele-Op program to use the REV Blinkin LEDs!)
 9. SKYSTONE & OpenCV programs (Programs involved in making a Computer Vision program to detect Skystones)
 
-
 We hope you have a wonderful season. Good luck!!
 // REPOSITORY LAST UPDATED: 1/19/20 \\
