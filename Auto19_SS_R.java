@@ -17,7 +17,7 @@ import java.util.Locale;
 
 // Check this website for color value help: http://colorizer.org/
 
-// LAST UPDATED: 1/19/20 \\
+// LAST UPDATED: 1/29/20 \\
 // PRELIMINARY PROGRAM; ADDITIONAL MATERIAL NEEDED \\
 @Autonomous
 //@Disabled
@@ -32,10 +32,10 @@ public class Auto19_SS_R extends LinearOpMode {
     // Servos
     Servo servo1;
     Servo servo2;
-    Servo armServo;
-    double servo_pos1 = 0.0;
-    double servo_pos2 = 1.0;
-    double arm_pos = 1.0;
+    Servo armServo2;
+    double servo_pos1 = 1.0;
+    double servo_pos2 = 0.0;
+    double arm_pos2 = 1.0;
 
     // Sensors
     ColorSensor sensorColor2;
@@ -58,13 +58,13 @@ public class Auto19_SS_R extends LinearOpMode {
 
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo2 = hardwareMap.get(Servo.class, "servo2");
-        armServo = hardwareMap.get(Servo.class, "armServo");
+        armServo2 = hardwareMap.get(Servo.class, "armServo2");
         servo1.setPosition(servo_pos1);
         servo2.setPosition(servo_pos2);
-        armServo.setPosition(arm_pos);
+        armServo2.setPosition(arm_pos2);
 
-        sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
-        sensorDistance2 = hardwareMap.get(DistanceSensor.class, "sensor_range");
+        sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_color_distance_2");
+        sensorDistance2 = hardwareMap.get(DistanceSensor.class, "sensor_range_2");
 
         float hsvValues[] = {0F, 0F, 0F};
         final double SCALE_FACTOR = 255;
@@ -87,11 +87,11 @@ public class Auto19_SS_R extends LinearOpMode {
 
 
             // Initial Strafe
-            frontLeftMotor.setPower(-0.55);
-            backLeftMotor.setPower(0.55);
-            frontRightMotor.setPower(0.55);
-            backRightMotor.setPower(-0.55);
-            sleep(2850);
+            frontLeftMotor.setPower(0.55);
+            backLeftMotor.setPower(-0.50);
+            frontRightMotor.setPower(-0.55);
+            backRightMotor.setPower(0.55);
+            sleep(3050);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
@@ -100,11 +100,11 @@ public class Auto19_SS_R extends LinearOpMode {
             sleep(700);
 
             // Adjust distance
-            while(sensorDistance2.getDistance(DistanceUnit.CM) > 12.8){
-                frontLeftMotor.setPower(-0.3);
-                backLeftMotor.setPower(0.3);
-                frontRightMotor.setPower(0.3);
-                backRightMotor.setPower(-0.3);
+            while(sensorDistance2.getDistance(DistanceUnit.CM) > 3.80){
+                frontLeftMotor.setPower(0.35);
+                backLeftMotor.setPower(-0.30);
+                frontRightMotor.setPower(-0.35);
+                backRightMotor.setPower(0.35);
 
                 telemetry.addData("Distance (cm)",
                         String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));
@@ -114,11 +114,11 @@ public class Auto19_SS_R extends LinearOpMode {
             sleep(500);
 
             // Skystone Detection
-            while(sensorColor2.red() > 50){
-                frontLeftMotor.setPower(0.3);
-                backLeftMotor.setPower(0.3);
-                frontRightMotor.setPower(0.3);
-                backRightMotor.setPower(0.3);
+            while(sensorColor2.red() > 380){
+                frontLeftMotor.setPower(0.25);
+                backLeftMotor.setPower(0.25);
+                frontRightMotor.setPower(0.25);
+                backRightMotor.setPower(0.25);
 
                 // Telemetry
                 telemetry.addData("Red  ", sensorColor2.red());
@@ -137,16 +137,16 @@ public class Auto19_SS_R extends LinearOpMode {
             sleep(1000);
 
             // Grab Skystone
-            arm_pos = 0.0;
-            armServo.setPosition(arm_pos);
+            arm_pos2 = 0.0;
+            armServo2.setPosition(arm_pos2);
             sleep(800);
 
             // Strafe away from Stone Line
-            frontLeftMotor.setPower(0.40);
-            backLeftMotor.setPower(-0.45);
-            frontRightMotor.setPower(-0.45);
-            backRightMotor.setPower(0.45);
-            sleep(1450);
+            frontLeftMotor.setPower(-0.45);
+            backLeftMotor.setPower(0.40);
+            frontRightMotor.setPower(0.45);
+            backRightMotor.setPower(-0.45);
+            sleep(1480);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
@@ -164,8 +164,8 @@ public class Auto19_SS_R extends LinearOpMode {
             backRightMotor.setPower(0.0);
 
             // Release Skystone
-            arm_pos = 1.0;
-            armServo.setPosition(arm_pos);
+            arm_pos2 = 1.0;
+            armServo2.setPosition(arm_pos2);
             sleep(300);
 
             // The foundation-grabbing maneuver has been removed for 1/11/20 competition
@@ -176,7 +176,7 @@ public class Auto19_SS_R extends LinearOpMode {
             backLeftMotor.setPower(0.5);
             frontRightMotor.setPower(0.5);
             backRightMotor.setPower(0.5);
-            sleep(1280);
+            sleep(1300);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);

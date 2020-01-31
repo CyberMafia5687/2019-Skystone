@@ -14,12 +14,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
 
-import static java.lang.Double.isNaN;
-
 
 // Check this website for color value help: http://colorizer.org/
 
-// LAST UPDATED: 1/19/20 \\
+// LAST UPDATED: 1/29/20 \\
 // PRELIMINARY PROGRAM; ADDITIONAL MATERIAL NEEDED \\
 @Autonomous
 //@Disabled
@@ -35,9 +33,9 @@ public class Auto19_SS_B extends LinearOpMode {
     Servo servo1;
     Servo servo2;
     Servo armServo;
-    double servo_pos1 = 0.0;
-    double servo_pos2 = 1.0;
-    double arm_pos = 1.0;
+    double servo_pos1 = 1.0;
+    double servo_pos2 = 0.0;
+    double arm_pos = 0.0;
 
     // Sensors
     ColorSensor sensorColor;
@@ -90,10 +88,10 @@ public class Auto19_SS_B extends LinearOpMode {
 
             // Initial Strafe
             frontLeftMotor.setPower(-0.55);
-            backLeftMotor.setPower(0.55);
+            backLeftMotor.setPower(0.50);
             frontRightMotor.setPower(0.55);
             backRightMotor.setPower(-0.55);
-            sleep(2850);
+            sleep(3050);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
@@ -102,11 +100,11 @@ public class Auto19_SS_B extends LinearOpMode {
             sleep(700);
 
             // Adjust distance
-            while(sensorDistance.getDistance(DistanceUnit.CM) > 12.8){
-                frontLeftMotor.setPower(-0.3);
-                backLeftMotor.setPower(0.3);
-                frontRightMotor.setPower(0.3);
-                backRightMotor.setPower(-0.3);
+            while(sensorDistance.getDistance(DistanceUnit.CM) > 3.80){
+                frontLeftMotor.setPower(-0.35);
+                backLeftMotor.setPower(0.30);
+                frontRightMotor.setPower(0.35);
+                backRightMotor.setPower(-0.35);
 
                 telemetry.addData("Distance (cm)",
                         String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
@@ -116,11 +114,11 @@ public class Auto19_SS_B extends LinearOpMode {
             sleep(500);
 
             // Skystone Detection
-            while(sensorColor.red() > 50){
-                frontLeftMotor.setPower(0.3);
-                backLeftMotor.setPower(0.3);
-                frontRightMotor.setPower(0.3);
-                backRightMotor.setPower(0.3);
+            while(sensorColor.red() > 380){
+                frontLeftMotor.setPower(0.25);
+                backLeftMotor.setPower(0.25);
+                frontRightMotor.setPower(0.25);
+                backRightMotor.setPower(0.25);
 
                 // Telemetry
                 telemetry.addData("Red  ", sensorColor.red());
@@ -139,16 +137,16 @@ public class Auto19_SS_B extends LinearOpMode {
             sleep(1000);
 
             // Grab Skystone
-            arm_pos = 0.0;
+            arm_pos = 1.0;
             armServo.setPosition(arm_pos);
             sleep(800);
 
             // Strafe away from Stone Line
-            frontLeftMotor.setPower(0.40);
-            backLeftMotor.setPower(-0.45);
+            frontLeftMotor.setPower(0.45);
+            backLeftMotor.setPower(-0.40);
             frontRightMotor.setPower(-0.45);
             backRightMotor.setPower(0.45);
-            sleep(1450);
+            sleep(1480);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
@@ -166,7 +164,7 @@ public class Auto19_SS_B extends LinearOpMode {
             backRightMotor.setPower(0.0);
 
             // Release Skystone
-            arm_pos = 1.0;
+            arm_pos = 0.0;
             armServo.setPosition(arm_pos);
             sleep(300);
 

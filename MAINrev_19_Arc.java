@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 // All driving code is from here: https://seamonsters-2605.github.io/archive/mecanum/, go check it out!
 
 
-// LAST UPDATED: 1/19/20 \\
+// LAST UPDATED: 1/30/20 \\
 @TeleOp
 //@Disabled
 public class MAINrev_19_Arc extends LinearOpMode {
@@ -23,14 +23,21 @@ public class MAINrev_19_Arc extends LinearOpMode {
     private DcMotor frontRightMotor;
     private DcMotor backRightMotor;
     private DcMotor armMotor;
+    private DcMotor armMotor2;
+    private DcMotor tapeMotor;
 
     // Servos
     Servo servo1;
     Servo servo2;
     Servo armServo;
-    double servo_pos1 = 0.0;
-    double servo_pos2 = 1.0;
-    double arm_pos = 1.0;
+    Servo armServo2;
+    Servo bucket;
+    double servo_pos1 = 1.0;
+    double servo_pos2 = 0.0;
+    double arm_pos = 0.0;
+    double arm_pos2 = 1.0;
+    double bucket_pos = 0.0;
+
     CRServo wheel1;
     CRServo wheel2;
 
@@ -47,13 +54,19 @@ public class MAINrev_19_Arc extends LinearOpMode {
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
 
         armMotor = hardwareMap.get(DcMotor.class, "armMotor");
+        armMotor2 = hardwareMap.get(DcMotor.class, "armMotor2");
+        tapeMotor = hardwareMap.get(DcMotor.class, "tapeMotor");
 
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo2 = hardwareMap.get(Servo.class, "servo2");
         armServo = hardwareMap.get(Servo.class, "armServo");
+        armServo2 = hardwareMap.get(Servo.class, "armServo2");
+        bucket = hardwareMap.get(Servo.class, "bucket");
         servo1.setPosition(servo_pos1);
         servo2.setPosition(servo_pos2);
         armServo.setPosition(arm_pos);
+        armServo2.setPosition(arm_pos2);
+        bucket.setPosition(bucket_pos);
 
         wheel1 = hardwareMap.get(CRServo.class, "wheel1");
         wheel2 = hardwareMap.get(CRServo.class, "wheel2");
@@ -103,11 +116,11 @@ public class MAINrev_19_Arc extends LinearOpMode {
            ////////////////////////////////////////
 
            // Foundation-Grabbing Servos
-           if(this.gamepad2.right_bumper){
+           if(this.gamepad1.right_bumper){
                servo_pos1 = 1.0;
                servo_pos2 = 0.0;
            }
-           else if(this.gamepad2.left_bumper){
+           else if(this.gamepad1.left_bumper){
                servo_pos1 = 0.0;
                servo_pos2 = 1.0;
            }
@@ -124,15 +137,54 @@ public class MAINrev_19_Arc extends LinearOpMode {
            }
            armServo.setPosition(arm_pos);
 
+           if(this.gamepad2.a){
+               arm_pos2 = 0.0;
+           }
+           else if(this.gamepad2.b){
+               arm_pos2 = 1.0;
+           }
+           armServo2.setPosition(arm_pos2);
 
-           // Lift/Arm Control
-           tgtPower1 = this.gamepad2.left_stick_y;
+
+           // Lift/Arm Control - VERTICAL
+           tgtPower1 = -this.gamepad2.left_stick_y;
            armMotor.setPower(tgtPower1);
+
+           // Lift/Arm Control - HORIZONTAL
+           if(this.gamepad2.dpad_up){
+               armMotor2.setPower(-0.5);
+           }
+           else if(this.gamepad2.dpad_down){
+               armMotor2.setPower(0.5);
+           }
+           else{
+               armMotor2.setPower(0.0);
+           }
 
            // Intake Controls
            tgtPower2 = this.gamepad2.right_stick_y;
            wheel1.setPower(tgtPower2);
            wheel2.setPower(-tgtPower2);
+
+           // Capstone Bucket
+           if(this.gamepad1.x){
+               bucket_pos = 1.0;
+           }
+           else if(this.gamepad1.b){
+               bucket_pos = 0.0;
+           }
+           bucket.setPosition(bucket_pos);
+
+           // Tape Measure Controls
+           if(this.gamepad2.right_bumper){
+               tapeMotor.setPower(1.0);
+           }
+           else if(this.gamepad2.left_bumper){
+               tapeMotor.setPower(-1.0);
+           }
+           else{
+               tapeMotor.setPower(0.0);
+           }
 
           }
        }

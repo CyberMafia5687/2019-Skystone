@@ -4,14 +4,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 // Extra Imports
 //
 
-// LAST UPDATED: 12/1/19 \\
+// LAST UPDATED: 1/5/20 \\
+// In case Arcade Style stops working for whatever reason \\
 @TeleOp
 @Disabled
 public class MAINrev_19 extends LinearOpMode {
@@ -25,8 +25,6 @@ public class MAINrev_19 extends LinearOpMode {
     // Servos
     Servo servo1;
     Servo servo2;
-    CRServo wheel1;
-    CRServo wheel2;
     double servo_pos1 = 0.0;
     double servo_pos2 = 1.0;
 
@@ -44,8 +42,6 @@ public class MAINrev_19 extends LinearOpMode {
 
         servo1 = hardwareMap.get(Servo.class, "servo1");
         servo2 = hardwareMap.get(Servo.class, "servo2");
-        wheel1 = hardwareMap.get(CRServo.class, "wheel1");
-        wheel2 = hardwareMap.get(CRServo.class, "wheel2");
         servo1.setPosition(servo_pos1);
         servo2.setPosition(servo_pos2);
 
@@ -61,7 +57,6 @@ public class MAINrev_19 extends LinearOpMode {
         double tgtPower2;
         double tgtPower3;
         double tgtPower4;
-        double tgtPower5;
 
 
         while (opModeIsActive()){
@@ -87,36 +82,6 @@ public class MAINrev_19 extends LinearOpMode {
            frontRightMotor.setPower(-tgtPower4);
            backRightMotor.setPower(tgtPower4);
 
-           /*
-           // Mechanum Drive v2.1 - Drive w/ Triggers
-           tgtPower3 = this.gamepad1.left_trigger;
-           frontRightMotor.setPower(tgtPower3);
-           backRightMotor.setPower(-tgtPower3);
-           frontLeftMotor.setPower(-tgtPower3);
-           backLeftMotor.setPower(tgtPower3);
-
-           tgtPower4 = this.gamepad1.right_trigger;
-           frontRightMotor.setPower(-tgtPower4);
-           backRightMotor.setPower(tgtPower4);
-           frontLeftMotor.setPower(tgtPower4);
-           backLeftMotor.setPower(-tgtPower4);
-
-
-           // Mechanum Drive v2.0
-           if(this.gamepad1.right_bumper){
-               frontRightMotor.setPower(-tgtPower4);
-               backRightMotor.setPower(tgtPower4);
-               frontLeftMotor.setPower(tgtPower3);
-               backLeftMotor.setPower(-tgtPower3);
-           }
-
-           if(this.gamepad1.left_bumper){
-               frontRightMotor.setPower(tgtPower4);
-               backRightMotor.setPower(-tgtPower4);
-               frontLeftMotor.setPower(-tgtPower3);
-               backLeftMotor.setPower(tgtPower3);
-           }
-           */
 
            // Foundation-Grabbing Servos
            if(this.gamepad2.b){
@@ -130,10 +95,6 @@ public class MAINrev_19 extends LinearOpMode {
            servo1.setPosition(servo_pos1);
            servo2.setPosition(servo_pos2);
 
-           // Stone Wheels
-           tgtPower5 = -this.gamepad2.left_stick_y;
-           wheel1.setPower(tgtPower5);
-           wheel2.setPower(-tgtPower5);
 
           }
        }
