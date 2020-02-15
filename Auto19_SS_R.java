@@ -17,8 +17,7 @@ import java.util.Locale;
 
 // Check this website for color value help: http://colorizer.org/
 
-// LAST UPDATED: 1/29/20 \\
-// PRELIMINARY PROGRAM; ADDITIONAL MATERIAL NEEDED \\
+// LAST UPDATED: 2/14/20 \\
 @Autonomous
 //@Disabled
 public class Auto19_SS_R extends LinearOpMode {
@@ -87,34 +86,36 @@ public class Auto19_SS_R extends LinearOpMode {
 
 
             // Initial Strafe
-            frontLeftMotor.setPower(0.55);
-            backLeftMotor.setPower(-0.50);
-            frontRightMotor.setPower(-0.55);
-            backRightMotor.setPower(0.55);
+            frontLeftMotor.setPower(0.45);
+            backLeftMotor.setPower(-0.45);
+            frontRightMotor.setPower(-0.49);
+            backRightMotor.setPower(0.45);
             sleep(3050);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
             backRightMotor.setPower(0.0);
 
+            //
+
             sleep(700);
 
             // Adjust distance
-            while(sensorDistance2.getDistance(DistanceUnit.CM) > 3.80){
+            while(sensorDistance2.getDistance(DistanceUnit.CM) > 12.00){
                 frontLeftMotor.setPower(0.35);
-                backLeftMotor.setPower(-0.30);
-                frontRightMotor.setPower(-0.35);
+                backLeftMotor.setPower(-0.35);
+                frontRightMotor.setPower(-0.39);
                 backRightMotor.setPower(0.35);
 
                 telemetry.addData("Distance (cm)",
-                        String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));
+                        String.format(Locale.US, "%.01f", sensorDistance2.getDistance(DistanceUnit.CM)));
                 telemetry.update();
             }
 
             sleep(500);
 
             // Skystone Detection
-            while(sensorColor2.red() > 380){
+            while(sensorColor2.red() > 400){
                 frontLeftMotor.setPower(0.25);
                 backLeftMotor.setPower(0.25);
                 frontRightMotor.setPower(0.25);
@@ -134,7 +135,20 @@ public class Auto19_SS_R extends LinearOpMode {
             frontRightMotor.setPower(0.0);
             backRightMotor.setPower(0.0);
 
-            sleep(1000);
+            sleep(500);
+
+            // Move forward a tad for the arm
+            frontLeftMotor.setPower(-0.20);
+            backLeftMotor.setPower(-0.20);
+            frontRightMotor.setPower(-0.20);
+            backRightMotor.setPower(-0.20);
+            sleep(150);
+            frontLeftMotor.setPower(0.0);
+            backLeftMotor.setPower(0.0);
+            frontRightMotor.setPower(0.0);
+            backRightMotor.setPower(0.0);
+
+            sleep(500);
 
             // Grab Skystone
             arm_pos2 = 0.0;
@@ -176,7 +190,7 @@ public class Auto19_SS_R extends LinearOpMode {
             backLeftMotor.setPower(0.5);
             frontRightMotor.setPower(0.5);
             backRightMotor.setPower(0.5);
-            sleep(1300);
+            sleep(1550);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);

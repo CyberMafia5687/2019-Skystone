@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,7 +18,7 @@ import java.util.Locale;
 // LAST UPDATED: 1/29/20 \\
 // FOR TESTING PURPOSES ONLY \\
 @Autonomous
-//@Disabled
+@Disabled
 public class Auto19_SS_E extends LinearOpMode {
 
     // Motors
@@ -30,9 +31,9 @@ public class Auto19_SS_E extends LinearOpMode {
     Servo servo1;
     Servo servo2;
     Servo armServo;
-    double servo_pos1 = 0.0;
-    double servo_pos2 = 1.0;
-    double arm_pos = 1.0;
+    double servo_pos1 = 1.0;
+    double servo_pos2 = 0.0;
+    double arm_pos = 0.0;
 
     // Sensors
     ColorSensor sensorColor;
@@ -61,7 +62,7 @@ public class Auto19_SS_E extends LinearOpMode {
         armServo.setPosition(arm_pos);
 
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_range");
 
         float hsvValues[] = {0F, 0F, 0F};
         final double SCALE_FACTOR = 255;
@@ -82,11 +83,14 @@ public class Auto19_SS_E extends LinearOpMode {
             EXAMPLE ONLY; BASED ON BLUE SIDE
             */
 
+            telemetry.addData("Status:", "The Hitbot is running");
+            telemetry.update();
+
             // Initial Strafe
-            frontLeftMotor.setPower(-0.55);
-            backLeftMotor.setPower(0.50);
-            frontRightMotor.setPower(0.55);
-            backRightMotor.setPower(-0.55);
+            frontLeftMotor.setPower(-0.45);
+            backLeftMotor.setPower(0.40);
+            frontRightMotor.setPower(0.40);
+            backRightMotor.setPower(-0.40);
             sleep(2800);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
@@ -96,9 +100,9 @@ public class Auto19_SS_E extends LinearOpMode {
             sleep(700);
 
             // Adjust distance
-            while(sensorDistance.getDistance(DistanceUnit.CM) > 3.80){
-                frontLeftMotor.setPower(-0.35);
-                backLeftMotor.setPower(0.30);
+            while(sensorDistance.getDistance(DistanceUnit.CM) > 12.00){
+                frontLeftMotor.setPower(-0.40);
+                backLeftMotor.setPower(0.35);
                 frontRightMotor.setPower(0.35);
                 backRightMotor.setPower(-0.35);
 
@@ -147,6 +151,22 @@ public class Auto19_SS_E extends LinearOpMode {
             telemetry.update();
 
             if(timeElapsed < 1.5){
+                // Telemetry
+                telemetry.addData("timeElapsed", timeElapsed);
+                telemetry.addData("Path:", "1");
+                telemetry.update();
+
+                // Move forward a tad for the arm
+                frontLeftMotor.setPower(-0.20);
+                backLeftMotor.setPower(-0.20);
+                frontRightMotor.setPower(-0.20);
+                backRightMotor.setPower(-0.20);
+                sleep(150);
+                frontLeftMotor.setPower(0.0);
+                backLeftMotor.setPower(0.0);
+                frontRightMotor.setPower(0.0);
+                backRightMotor.setPower(0.0);
+
                 // Grab Skystone
                 arm_pos = 1.0;
                 armServo.setPosition(arm_pos);
@@ -168,7 +188,7 @@ public class Auto19_SS_E extends LinearOpMode {
                 backLeftMotor.setPower(-0.6);
                 frontRightMotor.setPower(-0.6);
                 backRightMotor.setPower(-0.6);
-                sleep(3350);
+                sleep(3200);
                 frontLeftMotor.setPower(0.0);
                 backLeftMotor.setPower(0.0);
                 frontRightMotor.setPower(0.0);
@@ -184,13 +204,29 @@ public class Auto19_SS_E extends LinearOpMode {
                 backLeftMotor.setPower(0.5);
                 frontRightMotor.setPower(0.5);
                 backRightMotor.setPower(0.5);
-                sleep(1280);
+                sleep(1400);
                 frontLeftMotor.setPower(0.0);
                 backLeftMotor.setPower(0.0);
                 frontRightMotor.setPower(0.0);
                 backRightMotor.setPower(0.0);
             }
             else if(timeElapsed < 2.5){
+                // Telemetry
+                telemetry.addData("timeElapsed", timeElapsed);
+                telemetry.addData("Path:", "2");
+                telemetry.update();
+
+                // Move forward a tad for the arm
+                frontLeftMotor.setPower(-0.20);
+                backLeftMotor.setPower(-0.20);
+                frontRightMotor.setPower(-0.20);
+                backRightMotor.setPower(-0.20);
+                sleep(150);
+                frontLeftMotor.setPower(0.0);
+                backLeftMotor.setPower(0.0);
+                frontRightMotor.setPower(0.0);
+                backRightMotor.setPower(0.0);
+
                 // Grab Skystone
                 arm_pos = 1.0;
                 armServo.setPosition(arm_pos);
@@ -212,7 +248,7 @@ public class Auto19_SS_E extends LinearOpMode {
                 backLeftMotor.setPower(-0.6);
                 frontRightMotor.setPower(-0.6);
                 backRightMotor.setPower(-0.6);
-                sleep(3500);
+                sleep(3800);
                 frontLeftMotor.setPower(0.0);
                 backLeftMotor.setPower(0.0);
                 frontRightMotor.setPower(0.0);
@@ -228,13 +264,29 @@ public class Auto19_SS_E extends LinearOpMode {
                 backLeftMotor.setPower(0.5);
                 frontRightMotor.setPower(0.5);
                 backRightMotor.setPower(0.5);
-                sleep(1280);
+                sleep(1400);
                 frontLeftMotor.setPower(0.0);
                 backLeftMotor.setPower(0.0);
                 frontRightMotor.setPower(0.0);
                 backRightMotor.setPower(0.0);
             }
             else if(timeElapsed < 3.5) {
+                // Telemetry
+                telemetry.addData("timeElapsed", timeElapsed);
+                telemetry.addData("Path:", "3");
+                telemetry.update();
+
+                // Move forward a tad for the arm
+                frontLeftMotor.setPower(-0.20);
+                backLeftMotor.setPower(-0.20);
+                frontRightMotor.setPower(-0.20);
+                backRightMotor.setPower(-0.20);
+                sleep(150);
+                frontLeftMotor.setPower(0.0);
+                backLeftMotor.setPower(0.0);
+                frontRightMotor.setPower(0.0);
+                backRightMotor.setPower(0.0);
+
                 // Grab Skystone
                 arm_pos = 1.0;
                 armServo.setPosition(arm_pos);
@@ -256,7 +308,7 @@ public class Auto19_SS_E extends LinearOpMode {
                 backLeftMotor.setPower(-0.6);
                 frontRightMotor.setPower(-0.6);
                 backRightMotor.setPower(-0.6);
-                sleep(3700);
+                sleep(4000);
                 frontLeftMotor.setPower(0.0);
                 backLeftMotor.setPower(0.0);
                 frontRightMotor.setPower(0.0);
@@ -272,7 +324,7 @@ public class Auto19_SS_E extends LinearOpMode {
                 backLeftMotor.setPower(0.5);
                 frontRightMotor.setPower(0.5);
                 backRightMotor.setPower(0.5);
-                sleep(1280);
+                sleep(1400);
                 frontLeftMotor.setPower(0.0);
                 backLeftMotor.setPower(0.0);
                 frontRightMotor.setPower(0.0);
