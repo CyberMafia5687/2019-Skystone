@@ -17,7 +17,8 @@ import java.util.Locale;
 
 // Check this website for color value help: http://colorizer.org/
 
-// LAST UPDATED: 2/14/20 \\
+// LAST UPDATED: 1/29/20 \\
+// PRELIMINARY PROGRAM; ADDITIONAL MATERIAL NEEDED \\
 @Autonomous
 //@Disabled
 public class Auto19_SS_B extends LinearOpMode {
@@ -86,29 +87,27 @@ public class Auto19_SS_B extends LinearOpMode {
 
 
             // Initial Strafe
-            frontLeftMotor.setPower(-0.45);
-            backLeftMotor.setPower(0.45);
-            frontRightMotor.setPower(0.48);
-            backRightMotor.setPower(-0.45);
+            frontLeftMotor.setPower(-0.55);
+            backLeftMotor.setPower(0.50);
+            frontRightMotor.setPower(0.55);
+            backRightMotor.setPower(-0.55);
             sleep(3050);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
             backRightMotor.setPower(0.0);
 
-            //
-
             sleep(700);
 
             // Adjust distance
-            while(sensorDistance.getDistance(DistanceUnit.CM) > 12.00){
+            while(sensorDistance.getDistance(DistanceUnit.CM) >= 3.90){
                 frontLeftMotor.setPower(-0.35);
-                backLeftMotor.setPower(0.35);
-                frontRightMotor.setPower(0.38);
+                backLeftMotor.setPower(0.30);
+                frontRightMotor.setPower(0.35);
                 backRightMotor.setPower(-0.35);
 
                 telemetry.addData("Distance (cm)",
-                        String.format(Locale.US, "%.01f", sensorDistance.getDistance(DistanceUnit.CM)));
+                        String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
                 telemetry.update();
             }
 
@@ -138,11 +137,11 @@ public class Auto19_SS_B extends LinearOpMode {
             sleep(500);
 
             // Move forward a tad for the arm
-            frontLeftMotor.setPower(-0.20);
-            backLeftMotor.setPower(-0.20);
-            frontRightMotor.setPower(-0.20);
-            backRightMotor.setPower(-0.20);
-            sleep(150);
+            frontLeftMotor.setPower(-0.35);
+            backLeftMotor.setPower(-0.35);
+            frontRightMotor.setPower(-0.35);
+            backRightMotor.setPower(-0.35);
+            sleep(200);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
