@@ -17,8 +17,7 @@ import java.util.Locale;
 
 // Check this website for color value help: http://colorizer.org/
 
-// LAST UPDATED: 2/1/20 \\
-// PRELIMINARY PROGRAM; ADDITIONAL MATERIAL NEEDED \\
+// LAST UPDATED: 2/20/20 \\
 @Autonomous
 //@Disabled
 public class Auto19_SS_R extends LinearOpMode {
@@ -87,44 +86,55 @@ public class Auto19_SS_R extends LinearOpMode {
 
 
             // Initial Strafe
-            frontLeftMotor.setPower(0.55);
-            backLeftMotor.setPower(-0.50);
-            frontRightMotor.setPower(-0.55);
-            backRightMotor.setPower(0.55);
+            frontLeftMotor.setPower(0.45);
+            backLeftMotor.setPower(-0.45);
+            frontRightMotor.setPower(-0.53);
+            backRightMotor.setPower(0.45);
             sleep(3050);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
             backRightMotor.setPower(0.0);
 
+            //
+
             sleep(700);
 
             // Adjust distance
-            while(sensorDistance2.getDistance(DistanceUnit.CM) >= 4.10){
+            while(sensorDistance2.getDistance(DistanceUnit.CM) > 15.00){
                 frontLeftMotor.setPower(0.35);
-                backLeftMotor.setPower(-0.30);
-                frontRightMotor.setPower(-0.35);
+                backLeftMotor.setPower(-0.35);
+                frontRightMotor.setPower(-0.41);
                 backRightMotor.setPower(0.35);
 
                 telemetry.addData("Distance (cm)",
-                        String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));
+                        String.format(Locale.US, "%.01f", sensorDistance2.getDistance(DistanceUnit.CM)));
                 telemetry.update();
             }
 
-            sleep(500);
+            telemetry.addData("Red  ", sensorColor2.red());
+            telemetry.addData("Green", sensorColor2.green());
+            telemetry.addData("Blue ", sensorColor2.blue());
+            telemetry.update();
+            sleep(1000);
 
             // Skystone Detection
-            while(sensorColor2.red() > 400){
+            while(sensorColor2.red() > 500){
                 frontLeftMotor.setPower(0.25);
                 backLeftMotor.setPower(0.25);
                 frontRightMotor.setPower(0.25);
                 backRightMotor.setPower(0.25);
+                sleep(550);
+                frontLeftMotor.setPower(0.0);
+                backLeftMotor.setPower(0.0);
+                frontRightMotor.setPower(0.0);
+                backRightMotor.setPower(0.0);
+                sleep(500);
 
                 // Telemetry
                 telemetry.addData("Red  ", sensorColor2.red());
                 telemetry.addData("Green", sensorColor2.green());
                 telemetry.addData("Blue ", sensorColor2.blue());
-                telemetry.addData("Hue", hsvValues[0]);
                 telemetry.update();
             }
 
@@ -134,14 +144,14 @@ public class Auto19_SS_R extends LinearOpMode {
             frontRightMotor.setPower(0.0);
             backRightMotor.setPower(0.0);
 
-            sleep(500);
+            sleep(700);
 
             // Move forward a tad for the arm
-            frontLeftMotor.setPower(-0.35);
-            backLeftMotor.setPower(-0.35);
-            frontRightMotor.setPower(-0.35);
-            backRightMotor.setPower(-0.35);
-            sleep(200);
+            frontLeftMotor.setPower(-0.24);
+            backLeftMotor.setPower(-0.24);
+            frontRightMotor.setPower(-0.24);
+            backRightMotor.setPower(-0.24);
+            sleep(320);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
@@ -156,21 +166,32 @@ public class Auto19_SS_R extends LinearOpMode {
 
             // Strafe away from Stone Line
             frontLeftMotor.setPower(-0.45);
-            backLeftMotor.setPower(0.40);
-            frontRightMotor.setPower(0.45);
+            backLeftMotor.setPower(0.45);
+            frontRightMotor.setPower(0.56);
             backRightMotor.setPower(-0.45);
-            sleep(1480);
+            sleep(1250);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
             backRightMotor.setPower(0.0);
 
             // Move across the Midfield Tape to Building Side
-            frontLeftMotor.setPower(-0.6);
-            backLeftMotor.setPower(-0.6);
-            frontRightMotor.setPower(-0.6);
-            backRightMotor.setPower(-0.6);
-            sleep(3350);
+            frontLeftMotor.setPower(-0.7);
+            backLeftMotor.setPower(-0.7);
+            frontRightMotor.setPower(-0.7);
+            backRightMotor.setPower(-0.7);
+            sleep(2700);
+            frontLeftMotor.setPower(0.0);
+            backLeftMotor.setPower(0.0);
+            frontRightMotor.setPower(0.0);
+            backRightMotor.setPower(0.0);
+
+            // Strafe closer to the Bridge
+            frontLeftMotor.setPower(0.45);
+            backLeftMotor.setPower(-0.45);
+            frontRightMotor.setPower(-0.56);
+            backRightMotor.setPower(0.45);
+            sleep(1000);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
@@ -181,15 +202,12 @@ public class Auto19_SS_R extends LinearOpMode {
             armServo2.setPosition(arm_pos2);
             sleep(300);
 
-            // The foundation-grabbing maneuver has been removed for 1/11/20 competition
-            // The missing code can be found in Auto19_SS_E
-
             // Back to Midfield Tape
             frontLeftMotor.setPower(0.5);
             backLeftMotor.setPower(0.5);
             frontRightMotor.setPower(0.5);
             backRightMotor.setPower(0.5);
-            sleep(1550);
+            sleep(1800);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);

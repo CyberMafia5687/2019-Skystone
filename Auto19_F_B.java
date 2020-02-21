@@ -76,7 +76,7 @@ public class Auto19_F_B extends LinearOpMode {
             backLeftMotor.setPower(0.50);
             frontRightMotor.setPower(0.50);
             backRightMotor.setPower(-0.50);
-            sleep(1600);
+            sleep(1580);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
@@ -122,7 +122,7 @@ public class Auto19_F_B extends LinearOpMode {
             backLeftMotor.setPower(-0.60);
             frontRightMotor.setPower(-0.60);
             backRightMotor.setPower(0.60);
-            sleep(5100);
+            sleep(4900);
             frontLeftMotor.setPower(0.0);
             backLeftMotor.setPower(0.0);
             frontRightMotor.setPower(0.0);
